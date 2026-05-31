@@ -11,6 +11,7 @@
 //   - Was ist die durchschnittliche Wortlänge? (X)
 //   - Welcher Buchstabe kommt am häufigsten vor? (X)
 
+#include <algorithm>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -60,20 +61,29 @@ std::tuple<std::vector<std::string>, int> getWords() {
     return {words, charcount};
 }
 
-std::tuple<std::string, int> getLargestWord(std::vector<std::string> words) {
-    std::string largest = words[0];
+std::tuple<std::vector<std::string>, int> getLargestWords(std::vector<std::string> words) {
+    std::vector<std::string> largestWords;
+    largestWords.push_back(words[0]);
+
     int length = words[0].size();
+
     for (int i = 1; i < words.size(); i++) {
         int l = words[i].size();
         std::string w = words[i];
 
-        if (l > length) {
-            length = l;
-            largest = w;
+        if (l >= length) {
+            if (l > length) {
+                length = l;
+                largestWords.clear();
+            }
+            largestWords.push_back(w);
         }
     }
 
-    return {largest, length};
+    std::sort(largestWords.begin(), largestWords.end());
+    largestWords.erase(std::unique(largestWords.begin(), largestWords.end()), largestWords.end());
+
+    return {largestWords, length};
 }
 
 std::vector<int> countLetterAmount() {
@@ -103,32 +113,52 @@ void printLetterCounts(std::vector<int> letterCounts) {
     std::cout << std::endl;
 }
 
-std::tuple<char, int> getHighestCountedLetter(std::vector<int> letterCounts) {
+std::tuple<std::vector<char>, int> getHighestCountedLetter(std::vector<int> letterCounts) {
     const std::string alphabet{"abcdefghijklmnopqrstuvwxyz"};
 
-    int maxIndex = 0, maxAmount = letterCounts[0];
+    int maxAmount = letterCounts[0];
+    std::vector<int> maxIndices = {0};
 
     for (int i = 1; i < letterCounts.size(); i++) {
         int currentAmount = letterCounts[i];
-        if (currentAmount > maxAmount) {
-            maxIndex = i;
-            maxAmount = currentAmount;
+        if (currentAmount >= maxAmount) {
+            if (currentAmount > maxAmount) {
+                maxIndices.clear();
+                maxAmount = currentAmount;
+            }
+            maxIndices.push_back(i);
         }
     }
 
-    return {(char)maxIndex+'a', maxAmount};
+    std::vector<char> chars;
+    for (int j = 0; j < maxIndices.size(); j++) {
+        chars.push_back((char)maxIndices[j]+'a');
+    }
+
+    return {chars, maxAmount};
+}
+
+template <typename T>
+std::ostream& operator<<(std::ostream& os, const std::vector<T>& v) {
+    os << "[";
+    for (std::size_t i = 0; i < v.size(); ++i) {
+        if (i > 0) os << ", ";
+        os << v[i];  // requires: std::ostream& << const T&
+    }
+    os << "]";
+    return os;
 }
 
 int main() {
     auto [words, charcount] = getWords();
-    auto [largestWord, largestWordLength] = getLargestWord(words);
+    auto [largestWords, largestWordLength] = getLargestWords(words);
     auto letterCounts = countLetterAmount();
     auto [mostUsedCharName, mostUsedCharAmount] = getHighestCountedLetter(letterCounts);
 
 
     // results
     std::cout << "Wortanzahl: " << words.size() << std::endl;
-    std::cout << "Längstes Wort: " << largestWord << " (" << largestWordLength << ")" << std::endl;
+    std::cout << "Längstes Wort: " << largestWords << " (" << largestWordLength << ")" << std::endl;
     std::cout << "Zeichenanzahl: " << charcount << std::endl;
     std::cout << "Durchschnittliche Wortlänge: " << charcount / words.size() << std::endl;
     printLetterCounts(letterCounts);
