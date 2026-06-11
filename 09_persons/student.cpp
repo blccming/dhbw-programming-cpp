@@ -1,13 +1,11 @@
 #include "student.h"
 
 #include <iostream>
-#include <ostream>
 
-
-Student::Student(const std::string &name):
-    Student(name, "") // call the more specific constructor with "unknown" course name
-{
-}
+Student::Student(const std::string &name) :
+    // Call the more specific constructor with "unknown" for course name
+    Student(name, "unknown")
+{}
 
 Student::Student(const std::string &name, const std::string &course):
     // Call the protected constructor of superclass Person
@@ -17,7 +15,7 @@ Student::Student(const std::string &name, const std::string &course):
 }
 
 Student::~Student() {
-    std::cout << "[Student] " << mName << " denstructed." << std::endl;
+    std::cout << "[Student] " << mName << " destructed." << std::endl;
 }
 
 std::string Student::getPersonType() const {
@@ -25,6 +23,6 @@ std::string Student::getPersonType() const {
 }
 
 void Student::print(std::ostream &out) const {
-    Person::print(out); // Call print in superclass Person
+    Person::print(out);  // Call print in superclass Person
     out << ", Course: " << mCourse;
 }

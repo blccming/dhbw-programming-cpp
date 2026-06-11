@@ -10,7 +10,7 @@ class Student : public Person
         // Overloaded constructor, setting name and course
         Student(const std::string &name, const std::string &course);
 
-        // Override virtual destructor from Person
+        // Override virtual contructor from Person
         ~Student() override;
 
         std::string getPersonType() const override;
@@ -18,5 +18,5 @@ class Student : public Person
 
     private:
         std::string mCourse;
-        int mGrade;
+        int mGrade = 0;  // This initialization happens, when any constructor is called.
 };

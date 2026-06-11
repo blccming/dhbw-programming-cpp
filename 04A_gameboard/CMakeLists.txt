@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(persons)
+project(gameboard)
 
 add_definitions(
     -Wall  # enable all warnings
@@ -8,14 +8,8 @@ add_definitions(
 
 set(SOURCE_FILES
     main.cpp
-    employee.h
-    employee.cpp
-    person.h
-    person.cpp
-    professor.h
-    professor.cpp
-    student.h
-    student.cpp
+    gameboard.h
+    gameboard.cpp
 )
 
 add_executable(

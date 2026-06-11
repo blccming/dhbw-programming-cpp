@@ -3,8 +3,11 @@
 
 #include <iostream>
 
+// Definition and initialization of static class member
+int Person::sLastId = 0;
+
 Person::Person(const std::string &name):
-    mName(name)
+    mId(++sLastId), mName(name)
 {
     std::cout << "[Person] " << mName << " constructed." << std::endl;
 }
@@ -14,14 +17,14 @@ Person::~Person() {
 }
 
 void Person::print(std::ostream &out) const {
-    out << getPersonType() << ": " << mName;
+    out << getPersonType() << '[' << mId << "]: " << mName;
 }
 
 std::ostream &operator<<(std::ostream &out, const Person &p) {
     // We have a reference to a Person object, so we can
-    // call the virtual function print() on it.
-    // If the object is actuall a Student, the runtime ensures
-    // that the proper functin Student::print() is called.
+    // call the vitual function print() on it.
+    // If the object is actually a Student, the runtime ensures
+    // that the proper function Student::print() is called.
     p.print(out);
     return out;
 }
