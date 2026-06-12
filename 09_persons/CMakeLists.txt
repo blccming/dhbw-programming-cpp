@@ -7,9 +7,11 @@ add_definitions(
 )
 
 set(SOURCE_FILES
-    main.cpp
     employee.h
     employee.cpp
+    lecture.h
+    lecture.cpp
+    main.cpp
     person.h
     person.cpp
     professor.h

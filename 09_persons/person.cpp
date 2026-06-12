@@ -12,11 +12,13 @@ Person::Person(const std::string &name):
     std::cout << "[Person] " << mName << " constructed." << std::endl;
 }
 
-Person::~Person() {
+Person::~Person()
+{
     std::cout << "[Person] " << mName << " destructed." << std::endl;
 }
 
-void Person::print(std::ostream &out) const {
+void Person::print(std::ostream &out) const
+{
     out << getPersonType() << '[' << mId << "]: " << mName;
 }
 
